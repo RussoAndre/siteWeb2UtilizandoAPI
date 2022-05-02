@@ -2,12 +2,12 @@ const URL_API = "http://app.professordaniloalves.com.br";
 
 /* MENU */
 $('.scrollSuave').click(() => {
-    $('html, body').animate(
-        { scrollTop: $(event.target.getAttribute('href')).offset().top - 100 }, 500);
+$('html, body').animate(
+    { scrollTop: $(event.target.getAttribute('href')).offset().top - 100 }, 500);
 });
 
 $('#cadastroDeAcordo').change(function () {
-    $('#btnSubmitCadastro').attr("disabled", !this.checked);
+$('#btnSubmitCadastro').attr("disabled", !this.checked);
 });
 
 
@@ -17,10 +17,10 @@ formularioCadastro.addEventListener("submit", enviarFormularioCadastro, true);
 
 function enviarFormularioCadastro(event) {
     event.preventDefault();
-    
-     $("#formCadastro .invalid-feedback").remove();
-     $("#formCadastro .is-invalid").removeClass("is-invalid");
-    
+
+        $("#formCadastro .invalid-feedback").remove();
+        $("#formCadastro .is-invalid").removeClass("is-invalid");
+
     fetch(URL_API + "/api/v1/cadastro", {
         method: "POST",
         headers: new Headers({
@@ -49,10 +49,8 @@ function enviarFormularioCadastro(event) {
             });
         })
         .then(response => {
-            if (response && response.json.errors) {
-                console.log(response)
-                /* TODO Caso ocorra um erro com o status 4xx (exceto 422) ou 5xx e houver mensagem de erro “message”, está deve ser exibida ao usuário.
-                      if(response.status != 422 && (response.status))*/
+            if (response && response.status === 422 && response.json.errors) {
+                /*console.log(response)*/
 
                 Object.entries(response.json.errors).forEach((obj, index) => {
                     const id = parseIdCadastro(obj[0]);
@@ -62,7 +60,9 @@ function enviarFormularioCadastro(event) {
                     criarDivCadastroCampoInvalido(id, texto, index == 0);
 
                 })
-            } else {
+            } else if(response && response.json.message){
+                alert(response.json.message);
+               } else {
                 console.log(response)
                 reset();
             }
