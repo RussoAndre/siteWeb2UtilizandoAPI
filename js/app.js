@@ -17,7 +17,10 @@ formularioCadastro.addEventListener("submit", enviarFormularioCadastro, true);
 
 function enviarFormularioCadastro(event) {
     event.preventDefault();
-
+    
+     $("#formCadastro .invalid-feedback").remove();
+     $("#formCadastro .is-invalid").removeClass("is-invalid");
+    
     fetch(URL_API + "/api/v1/cadastro", {
         method: "POST",
         headers: new Headers({
