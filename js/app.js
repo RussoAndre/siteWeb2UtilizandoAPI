@@ -35,6 +35,7 @@ function enviarFormularioCadastro(event) {
             logradouro: document.getElementById("cadastroLogradouro").value,
             numeroLogradouro: document.getElementById("cadastroNumeroLogradouro").value,
             email: document.getElementById("cadastroEmail").value,
+            expectativa: document.getElementById("cadastroExpectativa").value,
         })
     })
 
