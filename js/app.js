@@ -59,6 +59,7 @@ function enviarFormularioCadastro(event) {
                 })
             } else if(response && response.json.message){
                 alert(response.json.message);
+                reset();
                } else {
                 console.log(response)
                 reset();
