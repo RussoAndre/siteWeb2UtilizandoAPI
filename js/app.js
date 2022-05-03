@@ -1,17 +1,14 @@
 const URL_API = "http://app.professordaniloalves.com.br";
 
-/* MENU */
 $('.scrollSuave').click(() => {
-$('html, body').animate(
-    { scrollTop: $(event.target.getAttribute('href')).offset().top - 100 }, 500);
+    $('html, body').animate(
+        { scrollTop: $(event.target.getAttribute('href')).offset().top - 100 }, 500);
 });
 
 $('#cadastroDeAcordo').change(function () {
-$('#btnSubmitCadastro').attr("disabled", !this.checked);
+    $('#btnSubmitCadastro').attr("disabled", !this.checked);
 });
 
-
-/* ENVIAR CADASTRO */
 const formularioCadastro = document.getElementById("formCadastro");
 formularioCadastro.addEventListener("submit", enviarFormularioCadastro, true);
 
@@ -69,6 +66,26 @@ function enviarFormularioCadastro(event) {
         });
 }
 
+function parseIdCadastro(id) {
+    return "cadastro" + capitalizeFirstLetter(id);
+}
+
+function criarDivCadastroCampoInvalido(idItem, textoErro, isFocarNoCampo) {
+    const el = document.getElementById(idItem);
+    if (isFocarNoCampo) {
+        el.focus();
+    }
+    el.classList.add("is-invalid");
+    const node = document.createElement("div");
+    const textnode = document.createTextNode(textoErro);
+    node.appendChild(textnode);
+    const elDiv = el.parentElement.appendChild(node);
+    elDiv.classList.add("invalid-feedback");
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function reset() {
     document.getElementById("cadastroNomeCompleto").value = null;
@@ -82,11 +99,6 @@ function reset() {
     document.getElementById("cadastroNumeroLogradouro").value = null;
     document.getElementById("cadastroEmail").value = null;
 }
-
-/* FIM ENVIAR CADASTRO */
-
-
-/* CRIAR LISTA DE ESTADOS */
 
 popularListaEstados();
 
@@ -119,19 +131,11 @@ function criarOption(valor, texto) {
     return node;
 }
 
-/* FIM CRIAR LISTA DE ESTADOS */
-
-
-/* PREENCHER ENDEREÇO */
-
-
-
 function popularEnderecoCadastro() {
     let campoCep = document.getElementById("cadastroCep")
     let cepPreenchido = campoCep.value.replace("-", "");
     if (cepPreenchido == null || cepPreenchido == undefined || cepPreenchido.length != 8) {
         console.log("CEP inválido");
-
 
     } else {
         fetch(URL_API + "/api/v1/endereco/" + cepPreenchido, {
@@ -156,22 +160,16 @@ function popularEnderecoCadastro() {
 
                 }
             }).catch(err => {
-
                 console.log(err);
             })
     }
 
-
 }
-/* FIM PREENCHER ENDEREÇO */
-
-/* IMC */
 
 $('#btnCalcularIMC').click(() => {
     $("#resultadoIMC").html("");
     $("#formImc .invalid-feedback").remove();
     $("#formImc .is-invalid").removeClass("is-invalid");
-
 
     fetch(URL_API + "/api/v1/imc/calcular", {
         method: "POST",
@@ -213,29 +211,6 @@ function parseIdImc(id) {
     return id + "Imc";
 }
 
-function parseIdCadastro(id) {
-    return "cadastro" + capitalizeFirstLetter(id);
-}
-
-function criarDivCadastroCampoInvalido(idItem, textoErro, isFocarNoCampo) {
-    const el = document.getElementById(idItem);
-    if (isFocarNoCampo) {
-        el.focus();
-    }
-    el.classList.add("is-invalid");
-    const node = document.createElement("div");
-    const textnode = document.createTextNode(textoErro);
-    node.appendChild(textnode);
-    const elDiv = el.parentElement.appendChild(node);
-    elDiv.classList.add("invalid-feedback");
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-
-
 function criarDivImcDeCampoInvalido(idItem, textoErro, isFocarNoCampo) {
     const el = document.getElementById(idItem);
     isFocarNoCampo && el.focus();
@@ -246,5 +221,3 @@ function criarDivImcDeCampoInvalido(idItem, textoErro, isFocarNoCampo) {
     const elDiv = el.parentElement.appendChild(node);
     elDiv.classList.add("invalid-feedback");
 }
-
-/* FIM IMC */
